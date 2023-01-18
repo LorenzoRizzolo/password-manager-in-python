@@ -8,6 +8,9 @@ connessione = MongoClient(mongodblink)
 db_name = 'db_name'
 db = connessione[db_name]
 
+#your password to enter
+password = "your_password"
+
 # here there are all color for this project
 global g # green
 g = '\033[92m'
@@ -146,6 +149,16 @@ def check():
         db.create_collection('sections')
 
 def main():
+    pw_status = False
+    while pw_status==False:
+        print(y)
+        pw = getpass.getpass()
+        print(res)
+        if pw != password:
+            print(r+"Password errata"+res)
+        else:
+            print(g+"Password corretta"+res)
+            pw_status=True
     while 1:
         opt = input(
             y+"\n-USER MENU-"+res

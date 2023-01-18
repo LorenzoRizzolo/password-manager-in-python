@@ -7,6 +7,10 @@
 * you can delete sections and delete name.
 
 ## How start
+### User information to add
+* You must add your mongodb link and your db name in mongodb.
+* You must also add your password to enter in program.
+***(there are all this information on the top of program)***
 ### Prerequisites to have
 * Python3.10 or most updated versions.
 * Pymongo, Python library (installa da terminale con "pip install pymongo")
