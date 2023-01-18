@@ -8,8 +8,18 @@ connessione = MongoClient(mongodblink)
 db_name = 'db_name'
 db = connessione[db_name]
 
+# here there are all color for this project
+global g # green
+g = '\033[92m'
+global r #red
+r = '\033[91m'
+global y #yellow
+y = '\033[93m'
+global res #reset
+res = '\033[0m'
+
 def add_user():
-    sez = input("Section name: ")
+    sez = input(y+"Section name: "+res)
     col = db['sections']
     ok=False
     for document in col.find():
@@ -17,14 +27,15 @@ def add_user():
             ok=True
     if ok:
         col = db['pw']
-        name = input("Name to add: ")
+        name = input(y+"Name to add: "+res)
         pw = getpass.getpass()
         col.insert_one( {"sez":sez , "name":name , "pw":pw} )
+        print(g+"Name added."+res)
     else:
-        print("This Section doesn't exist.")
+        print(r+"This Section doesn't exist."+res)
 
 def search():
-    sez = input("Section name: ")
+    sez = input(y+"Section name: "+res)
     col = db['sections']
     ok=False
     for document in col.find():
@@ -36,10 +47,10 @@ def search():
             if document["sez"]==sez:
                 print(document["name"]+" | "+document['pw'])
     else:
-        print("This Section doesn't exist.")
+        print(r+"This Section doesn't exist."+res)
 
 def remove_user():
-    sez = input("Section name to delte: ")
+    sez = input(y+"Section name to delete: "+res)
     col = db['sections']
     #cerco se esiste già
     ok=False
@@ -48,14 +59,15 @@ def remove_user():
         if document["name"]==sez:
             ok=True
     if ok:
-        name = input("Name to delete: ")
+        name = input(y+"Name to delete: "+res)
         col = db['pw']
         col.delete_many({"name":name})
+        print(g+name+" deleted."+res)
     else:
-        print("This Section doesn't exist.")
+        print(r+"This Section doesn't exist."+res)
 
 def change():
-    sez = input("Section name: ")
+    sez = input(y+"Section name: "+res)
     col = db['sections']
     #cerco se esiste già
     ok=False
@@ -64,7 +76,7 @@ def change():
         if document["name"]==sez:
             ok=True
     if ok:
-        name = input("Name to change password: ")
+        name = input(y+"Name to change password: "+res)
         col = db['pw']
         exsist=False
         for name in col.find():
@@ -72,15 +84,16 @@ def change():
                 exsist=True
         if exsist:
             col.delete_many({"name":name})
-            new_pw = input("New password for "+name+" in "+sez+" : ")
+            new_pw = input(y+"New password for "+name+" in "+sez+" : "+res)
             col.insert_one( {"sez":sez , "name":name , "pw":new_pw} )
+            print(g+"password changed."+res)
         else:
-            print("Name doesn't exist.")
+            print(r+"Name doesn't exist."+res)
     else:
-        print("This Section doesn't exist.")
+        print(r+"This Section doesn't exist."+res)
 
 def remove():
-    sez = input("Section to delete: ")
+    sez = input(y+"Section to delete: "+res)
     col = db['sections']
     #cerco se esiste già
     ok=False
@@ -92,9 +105,9 @@ def remove():
         col.delete_one({"name":sez})
         col = db['pw']
         col.delete_many({"sez":sez})
-        print("Section "+sez+" deleted.")
+        print(g+"Section "+sez+" deleted."+res)
     else:
-        print("This Section doesn't exist.")
+        print(r+"This Section doesn't exist."+res)
 
 def add():
     sez = input("Section name to add: ")
@@ -111,9 +124,8 @@ def add():
     else:
         print("This Section already exist.")
     
-
 def get_all():
-    print("\nAll sections:")
+    print(y+"\nAll sections:"+res)
     collection = db['sections']
     for document in collection.find():
         print(document["name"])
@@ -133,10 +145,21 @@ def check():
     if sez==False:
         db.create_collection('sections')
 
-
 def main():
     while 1:
-        opt = input("\n-USER MENU-\nchoose option:\n[ 0 ] Add section\n[ 1 ] Delete Section\n[ 2 ] Print all sections\n[ 3 ] Search data aboud section\n[ 4 ] Add name and his pw\n[ 5 ] Delete name from section\n[ 6 ] Change pw of one name in specific section\n[ x ] Exit\nWrite: ")
+        opt = input(
+            y+"\n-USER MENU-"+res
+            + "\nchoose option:"
+            + "\n[ "+g+"0"+res+" ] Add section"
+            + "\n[ "+g+"1"+res+" ] Delete Section"
+            + "\n[ "+g+"2"+res+" ] Print all sections"
+            + "\n[ "+g+"3"+res+" ] Search data aboud section"
+            + "\n[ "+g+"4"+res+" ] Add name and his pw"
+            + "\n[ "+g+"5"+res+" ] Delete name from section"
+            + "\n[ "+g+"6"+res+" ] Change pw of one name in specific section"
+            + r+"\n[ x ] Exit"+res
+            + y+"\nWrite: "+res
+        )
         match opt:
             case '0':
                 add()
